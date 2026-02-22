@@ -6,7 +6,7 @@ import { Check } from "lucide-react";
 const plans = [
   {
     name: "Starter",
-    price: "₹15,000",
+    price: "₹X",
     period: "/month",
     desc: "For small hospitals getting started",
     features: ["Up to 25 leads/month", "Basic lead dashboard", "Email notifications", "Standard support"],
@@ -14,7 +14,7 @@ const plans = [
   },
   {
     name: "Growth",
-    price: "₹35,000",
+    price: "₹Y",
     period: "/month",
     desc: "For hospitals scaling patient acquisition",
     features: ["Up to 100 leads/month", "Priority lead routing", "Analytics dashboard", "Transparency badge", "Dedicated support"],
@@ -22,7 +22,7 @@ const plans = [
   },
   {
     name: "Pay Per Lead",
-    price: "₹1,500",
+    price: "₹Z",
     period: "/lead",
     desc: "Flexible option — pay only for results",
     features: ["No monthly commitment", "Verified patient intent", "Lead quality scoring", "Basic reporting"],
