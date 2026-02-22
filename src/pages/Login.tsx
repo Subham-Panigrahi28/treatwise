@@ -23,7 +23,7 @@ export default function Login() {
       const ok = login(email, password);
       setLoading(false);
       if (ok) {
-        navigate("/dashboard");
+        navigate("/patient/dashboard");
       } else {
         toast({ title: "Login failed", description: "Invalid email or password.", variant: "destructive" });
       }
@@ -40,7 +40,7 @@ export default function Login() {
             </div>
             <span className="font-display text-2xl font-bold text-foreground">TreatWise</span>
           </Link>
-          <p className="mt-2 text-muted-foreground">Log in to your account</p>
+          <p className="mt-2 text-muted-foreground">Log in to your patient account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border border-border bg-card p-6 shadow-card">
@@ -62,7 +62,7 @@ export default function Login() {
           </Button>
           <p className="text-center text-sm text-muted-foreground">
             Don't have an account?{" "}
-            <Link to="/signup" className="font-medium text-primary hover:underline">Sign up</Link>
+            <Link to="/patient/signup" className="font-medium text-primary hover:underline">Sign up</Link>
           </p>
         </form>
       </div>

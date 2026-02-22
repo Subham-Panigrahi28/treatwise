@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { procedures } from "@/data/seed";
 import { formatCurrency } from "@/lib/matching";
-import { Navbar } from "@/components/Navbar";
+import { PatientNavbar } from "@/components/PatientNavbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Clock, IndianRupee, Stethoscope, ArrowRight, Activity, Users } from "lucide-react";
@@ -23,7 +23,7 @@ export default function TreatmentInfo() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <Navbar />
+      <PatientNavbar />
       <main className="flex-1 py-10">
         <div className="container mx-auto max-w-3xl px-4">
           <div className="mb-2 text-sm font-medium text-accent">{proc.specialty}</div>
@@ -55,7 +55,6 @@ export default function TreatmentInfo() {
             </div>
           </div>
 
-          {/* Questions to ask */}
           <div className="mb-8 rounded-xl border border-border bg-card p-6 shadow-card">
             <h2 className="mb-4 font-display text-xl font-bold text-foreground">Questions to Ask Your Hospital</h2>
             <ol className="space-y-3">
@@ -69,10 +68,10 @@ export default function TreatmentInfo() {
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <Button onClick={() => navigate(`/insights/${proc.id}`)} variant="outline" size="lg">
+            <Button onClick={() => navigate(`/patient/insights/${proc.id}`)} variant="outline" size="lg">
               <Users className="mr-2 h-4 w-4" /> Patients Like You
             </Button>
-            <Button onClick={() => navigate(`/compare/${proc.id}`)} size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
+            <Button onClick={() => navigate(`/patient/compare/${proc.id}`)} size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
               Compare Hospitals <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>

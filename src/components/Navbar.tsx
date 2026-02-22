@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
-import { Shield, LogOut, FileText, Menu, X, User } from "lucide-react";
+import { Shield, LogOut, FileText, Menu, X, User, ClipboardList, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
@@ -23,10 +23,12 @@ export function Navbar() {
         <div className="hidden items-center gap-1 md:flex">
           <Link to="/how-it-works"><Button variant="ghost" size="sm">How It Works</Button></Link>
           <Link to="/for-hospitals"><Button variant="ghost" size="sm">For Hospitals</Button></Link>
+          <Link to="/hospital/login"><Button variant="ghost" size="sm"><Building2 className="mr-1.5 h-4 w-4" />Hospital Portal</Button></Link>
           <Link to="/pricing"><Button variant="ghost" size="sm">Pricing</Button></Link>
           {user ? (
             <>
               <Link to="/dashboard"><Button variant="ghost" size="sm">Dashboard</Button></Link>
+              <Link to="/responses"><Button variant="ghost" size="sm"><ClipboardList className="mr-1.5 h-4 w-4" />Responses</Button></Link>
               <Link to="/decisions"><Button variant="ghost" size="sm"><FileText className="mr-1.5 h-4 w-4" />Decisions</Button></Link>
               <Link to="/profile"><Button variant="ghost" size="sm"><User className="mr-1.5 h-4 w-4" />{user.name}</Button></Link>
               <Button variant="outline" size="sm" onClick={() => { logout(); navigate("/"); }}>

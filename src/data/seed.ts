@@ -19,6 +19,9 @@ export interface Hospital {
   city: string;
   specializationScore: number;
   transparencyScore: number;
+  isPartner: boolean;
+  avgResponseHours?: number;
+  responsivenessScore?: number;
 }
 
 export interface HospitalProcedure {
@@ -63,6 +66,22 @@ export interface Lead {
   procedureId: string;
   confidenceScore: number;
   leadStage: "new" | "reviewing" | "contacted" | "converted";
+  status: "pending" | "responded" | "closed";
+  requestedAt: string;
+  createdAt: string;
+}
+
+export interface HospitalResponse {
+  id: string;
+  leadId: string;
+  hospitalId: string;
+  packagePrice: number;
+  inclusions: string;
+  exclusions: string;
+  surgeonName: string;
+  estimatedAdmissionDays: number;
+  bedAvailability: boolean;
+  additionalNotes: string;
   createdAt: string;
 }
 
@@ -132,11 +151,11 @@ export const procedures: Procedure[] = [
 ];
 
 export const hospitals: Hospital[] = [
-  { id: "hosp-1", name: "Ruby Hall Clinic", city: "Pune", specializationScore: 92, transparencyScore: 88 },
-  { id: "hosp-2", name: "Sahyadri Hospital", city: "Pune", specializationScore: 89, transparencyScore: 85 },
-  { id: "hosp-3", name: "Jehangir Hospital", city: "Pune", specializationScore: 90, transparencyScore: 90 },
-  { id: "hosp-4", name: "Deenanath Mangeshkar Hospital", city: "Pune", specializationScore: 87, transparencyScore: 92 },
-  { id: "hosp-5", name: "Manipal Hospital Pune", city: "Pune", specializationScore: 85, transparencyScore: 83 },
+  { id: "hosp-1", name: "Ruby Hall Clinic", city: "Pune", specializationScore: 92, transparencyScore: 88, isPartner: true, avgResponseHours: 3, responsivenessScore: 8 },
+  { id: "hosp-2", name: "Sahyadri Hospital", city: "Pune", specializationScore: 89, transparencyScore: 85, isPartner: true, avgResponseHours: 5, responsivenessScore: 8 },
+  { id: "hosp-3", name: "Jehangir Hospital", city: "Pune", specializationScore: 90, transparencyScore: 90, isPartner: false },
+  { id: "hosp-4", name: "Deenanath Mangeshkar Hospital", city: "Pune", specializationScore: 87, transparencyScore: 92, isPartner: true, avgResponseHours: 1.5, responsivenessScore: 10 },
+  { id: "hosp-5", name: "Manipal Hospital Pune", city: "Pune", specializationScore: 85, transparencyScore: 83, isPartner: false },
 ];
 
 export const hospitalProcedures: HospitalProcedure[] = [

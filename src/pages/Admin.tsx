@@ -9,9 +9,9 @@ import { Building2, Users, Calendar } from "lucide-react";
 
 // Demo leads
 const demoLeads: Lead[] = [
-  { id: "lead-1", userId: "demo-user", hospitalId: "hosp-1", procedureId: "proc-1", confidenceScore: 88, leadStage: "new", createdAt: new Date().toISOString() },
-  { id: "lead-2", userId: "demo-user", hospitalId: "hosp-3", procedureId: "proc-2", confidenceScore: 92, leadStage: "reviewing", createdAt: new Date(Date.now() - 86400000).toISOString() },
-  { id: "lead-3", userId: "demo-user", hospitalId: "hosp-2", procedureId: "proc-3", confidenceScore: 75, leadStage: "contacted", createdAt: new Date(Date.now() - 172800000).toISOString() },
+  { id: "lead-1", userId: "demo-user", hospitalId: "hosp-1", procedureId: "proc-1", confidenceScore: 88, leadStage: "new", status: "pending", requestedAt: new Date().toISOString(), createdAt: new Date().toISOString() },
+  { id: "lead-2", userId: "demo-user", hospitalId: "hosp-3", procedureId: "proc-2", confidenceScore: 92, leadStage: "reviewing", status: "responded", requestedAt: new Date(Date.now() - 86400000).toISOString(), createdAt: new Date(Date.now() - 86400000).toISOString() },
+  { id: "lead-3", userId: "demo-user", hospitalId: "hosp-2", procedureId: "proc-3", confidenceScore: 75, leadStage: "contacted", status: "pending", requestedAt: new Date(Date.now() - 172800000).toISOString(), createdAt: new Date(Date.now() - 172800000).toISOString() },
 ];
 
 const stageColors: Record<string, string> = {

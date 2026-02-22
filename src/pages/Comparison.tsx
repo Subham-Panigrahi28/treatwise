@@ -2,13 +2,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { procedures, hospitals } from "@/data/seed";
 import { rankHospitals, generateConfidence, formatCurrency } from "@/lib/matching";
-import { Navbar } from "@/components/Navbar";
+import { PatientNavbar } from "@/components/PatientNavbar";
 import { Footer } from "@/components/Footer";
 import { HospitalCard } from "@/components/HospitalCard";
 import { ConfidenceScore } from "@/components/ConfidenceScore";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Save, FileDown, Phone, CheckCircle2, Users } from "lucide-react";
+import { Save, FileDown, Phone, CheckCircle2, Users, ClipboardList } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import type { DecisionFile, Lead } from "@/data/seed";
 
@@ -26,7 +26,6 @@ export default function Comparison() {
   const rankings = rankHospitals(proc.id);
   const confidence = generateConfidence(rankings);
 
-  // City average cost
   const avgCityMin = proc.avgCostMin;
   const avgCityMax = proc.avgCostMax;
 
@@ -54,12 +53,14 @@ export default function Comparison() {
       procedureId: proc.id,
       confidenceScore: confidence.score,
       leadStage: "new",
+      status: "pending",
+      requestedAt: new Date().toISOString(),
       createdAt: new Date().toISOString(),
     };
     createLead(lead);
     setConnectedHospitals((prev) => new Set(prev).add(hospitalId));
     const hosp = hospitals.find((h) => h.id === hospitalId);
-    toast({ title: "Connection requested!", description: `${hosp?.name} is reviewing your case.` });
+    toast({ title: "Treatment plan requested!", description: `${hosp?.name} is reviewing your case.` });
   };
 
   const handleExport = () => {
@@ -92,13 +93,12 @@ export default function Comparison() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <Navbar />
+      <PatientNavbar />
       <main className="flex-1 py-10">
         <div className="container mx-auto max-w-5xl px-4">
           <div className="mb-2 text-sm font-medium text-accent">{proc.specialty} • {proc.city}</div>
           <h1 className="mb-4 font-display text-3xl font-bold text-foreground">Hospital Comparison: {proc.name}</h1>
 
-          {/* City average banner */}
           <div className="mb-8 flex items-center gap-3 rounded-lg border border-border bg-muted/50 p-4">
             <Users className="h-5 w-5 text-primary" />
             <div className="text-sm text-muted-foreground">
@@ -107,30 +107,32 @@ export default function Comparison() {
           </div>
 
           <div className="grid gap-8 lg:grid-cols-3">
-            {/* Hospital cards */}
             <div className="space-y-4 lg:col-span-2">
               {rankings.map((r, i) => (
                 <div key={r.hospital.id}>
                   <HospitalCard ranked={r} rank={i + 1} />
-                  <div className="mt-2 flex justify-end">
-                    {connectedHospitals.has(r.hospital.id) ? (
-                      <span className="flex items-center gap-1.5 text-sm text-trust font-medium">
-                        <CheckCircle2 className="h-4 w-4" /> Hospital reviewing your case…
-                      </span>
-                    ) : (
-                      <Button size="sm" variant="outline" onClick={() => handleConnect(r.hospital.id)}>
-                        <Phone className="mr-1.5 h-3.5 w-3.5" /> Connect with Hospital
-                      </Button>
-                    )}
-                  </div>
+                   <div className="mt-2 flex justify-end gap-2">
+                     {connectedHospitals.has(r.hospital.id) ? (
+                       <span className="flex items-center gap-1.5 text-sm text-trust font-medium">
+                         <CheckCircle2 className="h-4 w-4" /> Hospital reviewing your case…
+                       </span>
+                     ) : (
+                       <>
+                         <Button size="sm" variant="outline" onClick={() => handleConnect(r.hospital.id)}>
+                           <Phone className="mr-1.5 h-3.5 w-3.5" /> Connect
+                         </Button>
+                         <Button size="sm" onClick={() => handleConnect(r.hospital.id)}>
+                           <ClipboardList className="mr-1.5 h-3.5 w-3.5" /> Request Treatment Plan
+                         </Button>
+                       </>
+                     )}
+                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Sidebar */}
             <div className="space-y-6">
               <ConfidenceScore score={confidence.score} bullets={confidence.bullets} />
-
               <div className="flex flex-col gap-3">
                 <Button onClick={handleSave} disabled={saved} className="w-full">
                   <Save className="mr-2 h-4 w-4" />
@@ -140,8 +142,11 @@ export default function Comparison() {
                   <FileDown className="mr-2 h-4 w-4" />
                   Export Decision File
                 </Button>
-                <Button variant="ghost" onClick={() => navigate(`/insights/${proc.id}`)} className="w-full text-primary">
+                <Button variant="ghost" onClick={() => navigate(`/patient/insights/${proc.id}`)} className="w-full text-primary">
                   <Users className="mr-2 h-4 w-4" /> Patients Like You
+                </Button>
+                <Button variant="ghost" onClick={() => navigate("/patient/responses")} className="w-full text-primary">
+                  <ClipboardList className="mr-2 h-4 w-4" /> View Responses
                 </Button>
               </div>
             </div>

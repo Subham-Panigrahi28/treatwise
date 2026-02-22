@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Navbar } from "@/components/Navbar";
+import { PatientNavbar } from "@/components/PatientNavbar";
 import { Footer } from "@/components/Footer";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -31,10 +31,8 @@ export default function Dashboard() {
     }
     setFileName(file.name);
     setStep("processing");
-
-    // Simulate OCR processing
     setTimeout(() => {
-      const text = samplePrescriptionText; // In prod, this would be Tesseract OCR
+      const text = samplePrescriptionText;
       setExtractedText(text);
       const proc = detectProcedure(text);
       setDetected(proc);
@@ -70,18 +68,18 @@ export default function Dashboard() {
 
   const handleConfirm = () => {
     if (detected) {
-      navigate(`/treatment/${detected.id}`);
+      navigate(`/patient/treatment/${detected.id}`);
     }
   };
 
   if (!user) {
-    navigate("/login");
+    navigate("/patient/login");
     return null;
   }
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <Navbar />
+      <PatientNavbar />
       <main className="flex-1 py-10">
         <div className="container mx-auto max-w-2xl px-4">
           <h1 className="mb-2 font-display text-3xl font-bold text-foreground">Upload Prescription</h1>
@@ -89,7 +87,6 @@ export default function Dashboard() {
 
           {step === "upload" && (
             <div className="space-y-6">
-              {/* Consent */}
               <div className="flex items-start gap-3 rounded-lg border border-border bg-muted/50 p-4">
                 <Checkbox id="consent" checked={consent} onCheckedChange={(v) => setConsent(v === true)} className="mt-0.5" />
                 <label htmlFor="consent" className="text-sm text-foreground">
@@ -97,7 +94,6 @@ export default function Dashboard() {
                 </label>
               </div>
 
-              {/* Upload area */}
               <div
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={handleDrop}
@@ -116,7 +112,6 @@ export default function Dashboard() {
                 </label>
               </div>
 
-              {/* Sample button */}
               <div className="text-center">
                 <Button variant="ghost" onClick={handleUseSample} className="text-primary">
                   <Sparkles className="mr-2 h-4 w-4" />
@@ -136,7 +131,6 @@ export default function Dashboard() {
 
           {step === "confirm" && (
             <div className="space-y-6">
-              {/* Extracted text */}
               <div className="rounded-xl border border-border bg-card p-5 shadow-card">
                 <div className="mb-3 flex items-center gap-2">
                   <FileText className="h-4 w-4 text-primary" />
@@ -145,7 +139,6 @@ export default function Dashboard() {
                 <pre className="max-h-48 overflow-auto rounded-lg bg-muted p-4 text-xs text-foreground">{extractedText.trim()}</pre>
               </div>
 
-              {/* Detection result */}
               {detected ? (
                 <div className="rounded-xl border-2 border-trust/30 bg-trust/5 p-5">
                   <div className="mb-3 flex items-center gap-2">

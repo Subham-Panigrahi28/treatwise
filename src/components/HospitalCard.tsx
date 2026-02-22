@@ -1,7 +1,8 @@
 import type { RankedHospital } from "@/data/seed";
 import { formatCurrency } from "@/lib/matching";
 import { Badge } from "@/components/ui/badge";
-import { Building2, IndianRupee, HeartPulse, ShieldCheck, Star } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Building2, IndianRupee, HeartPulse, ShieldCheck, Star, CheckCircle2, Clock, Zap } from "lucide-react";
 
 interface HospitalCardProps {
   ranked: RankedHospital;
@@ -10,8 +11,17 @@ interface HospitalCardProps {
   onSelect?: () => void;
 }
 
+function responsivenessLabel(score?: number): { label: string; color: string } {
+  if (!score) return { label: "N/A", color: "text-muted-foreground" };
+  if (score >= 9) return { label: "Excellent", color: "text-trust" };
+  if (score >= 7) return { label: "Fast", color: "text-trust" };
+  if (score >= 5) return { label: "Average", color: "text-warning-foreground" };
+  return { label: "Slow", color: "text-destructive" };
+}
+
 export function HospitalCard({ ranked, rank, selected, onSelect }: HospitalCardProps) {
   const { hospital, procedure: hp, score, tags } = ranked;
+  const resp = responsivenessLabel(hospital.responsivenessScore);
 
   return (
     <div
@@ -31,6 +41,16 @@ export function HospitalCard({ ranked, rank, selected, onSelect }: HospitalCardP
           <div className="flex items-center gap-2">
             <Building2 className="h-4 w-4 text-primary" />
             <h3 className="font-display text-lg font-bold text-foreground">{hospital.name}</h3>
+            {hospital.isPartner && (
+              <Tooltip>
+                <TooltipTrigger>
+                  <Badge className="bg-trust text-trust-foreground text-[10px] px-1.5 py-0">
+                    <CheckCircle2 className="mr-0.5 h-2.5 w-2.5" /> Verified Partner
+                  </Badge>
+                </TooltipTrigger>
+                <TooltipContent>Verified packages provided directly by this hospital</TooltipContent>
+              </Tooltip>
+            )}
           </div>
           <p className="mt-0.5 text-sm text-muted-foreground">{hospital.city}</p>
         </div>
@@ -43,10 +63,14 @@ export function HospitalCard({ ranked, rank, selected, onSelect }: HospitalCardP
       <div className="mb-4 grid grid-cols-2 gap-3">
         <div className="rounded-lg bg-muted p-3">
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <IndianRupee className="h-3 w-3" /> Cost Range
+            <IndianRupee className="h-3 w-3" /> {hospital.isPartner ? "Verified Package" : "Cost Range"}
           </div>
           <p className="mt-1 text-sm font-semibold text-foreground">
-            {formatCurrency(hp.costMin)} – {formatCurrency(hp.costMax)}
+            {hospital.isPartner ? (
+              <span className="text-trust">{formatCurrency(hp.costMin)} all-inclusive</span>
+            ) : (
+              <>{formatCurrency(hp.costMin)} – {formatCurrency(hp.costMax)}</>
+            )}
           </p>
         </div>
         <div className="rounded-lg bg-muted p-3">
@@ -68,6 +92,20 @@ export function HospitalCard({ ranked, rank, selected, onSelect }: HospitalCardP
           <p className="mt-1 text-sm font-semibold text-foreground">{hp.experienceLevel}</p>
         </div>
       </div>
+
+      {/* Responsiveness row */}
+      {hospital.avgResponseHours !== undefined && (
+        <div className="mb-4 flex items-center gap-3 rounded-lg border border-border bg-muted/50 p-3">
+          <Zap className={`h-4 w-4 ${resp.color}`} />
+          <div className="flex items-center gap-2 text-sm">
+            <span className="text-muted-foreground">Responds in</span>
+            <strong className="text-foreground">~{hospital.avgResponseHours < 1 ? `${Math.round(hospital.avgResponseHours * 60)} min` : `${hospital.avgResponseHours} hrs`}</strong>
+            <Badge variant="outline" className={`text-xs ${resp.color}`}>
+              <Clock className="mr-0.5 h-2.5 w-2.5" /> {resp.label} ({hospital.responsivenessScore}/10)
+            </Badge>
+          </div>
+        </div>
+      )}
 
       <div className="flex flex-wrap gap-1.5">
         {tags.map((tag) => (

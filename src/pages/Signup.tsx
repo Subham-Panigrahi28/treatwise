@@ -25,10 +25,10 @@ export default function Signup() {
     }
     setLoading(true);
     setTimeout(() => {
-      signup(name, email, password);
+      signup(name, email, password, "patient");
       setLoading(false);
       toast({ title: "Account created!", description: "Welcome to TreatWise." });
-      navigate("/dashboard");
+      navigate("/patient/dashboard");
     }, 500);
   };
 
@@ -42,7 +42,7 @@ export default function Signup() {
             </div>
             <span className="font-display text-2xl font-bold text-foreground">TreatWise</span>
           </Link>
-          <p className="mt-2 text-muted-foreground">Create your account</p>
+          <p className="mt-2 text-muted-foreground">Create your patient account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border border-border bg-card p-6 shadow-card">
@@ -68,7 +68,7 @@ export default function Signup() {
           </Button>
           <p className="text-center text-sm text-muted-foreground">
             Already have an account?{" "}
-            <Link to="/login" className="font-medium text-primary hover:underline">Log in</Link>
+            <Link to="/patient/login" className="font-medium text-primary hover:underline">Log in</Link>
           </p>
         </form>
       </div>

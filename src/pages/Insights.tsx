@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { procedures, patientInsights } from "@/data/seed";
 import { formatCurrency } from "@/lib/matching";
-import { Navbar } from "@/components/Navbar";
+import { PatientNavbar } from "@/components/PatientNavbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Users, IndianRupee, Clock, ThumbsUp, Building2, ArrowRight } from "lucide-react";
@@ -20,7 +20,7 @@ export default function Insights() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <Navbar />
+      <PatientNavbar />
       <main className="flex-1 py-10">
         <div className="container mx-auto max-w-3xl px-4">
           <div className="mb-2 text-sm font-medium text-accent">{proc.specialty}</div>
@@ -67,7 +67,7 @@ export default function Insights() {
             ))}
           </div>
 
-          <Button onClick={() => navigate(`/compare/${proc.id}`)} size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
+          <Button onClick={() => navigate(`/patient/compare/${proc.id}`)} size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
             Compare Hospitals <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>

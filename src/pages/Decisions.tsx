@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
-import { Navbar } from "@/components/Navbar";
+import { PatientNavbar } from "@/components/PatientNavbar";
 import { Footer } from "@/components/Footer";
 import { procedures } from "@/data/seed";
 import { Button } from "@/components/ui/button";
@@ -10,13 +10,13 @@ export default function Decisions() {
   const { user, decisions } = useAuth();
   const navigate = useNavigate();
 
-  if (!user) { navigate("/login"); return null; }
+  if (!user) { navigate("/patient/login"); return null; }
 
   const userDecisions = decisions.filter((d) => d.userId === user.id);
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <Navbar />
+      <PatientNavbar />
       <main className="flex-1 py-10">
         <div className="container mx-auto max-w-3xl px-4">
           <h1 className="mb-2 font-display text-3xl font-bold text-foreground">My Decisions</h1>
@@ -26,7 +26,7 @@ export default function Decisions() {
             <div className="rounded-xl border border-border bg-card p-12 text-center shadow-card">
               <FileText className="mx-auto mb-4 h-10 w-10 text-muted-foreground/40" />
               <p className="mb-4 text-muted-foreground">No decisions saved yet.</p>
-              <Button onClick={() => navigate("/dashboard")}>Upload a Prescription</Button>
+              <Button onClick={() => navigate("/patient/dashboard")}>Upload a Prescription</Button>
             </div>
           ) : (
             <div className="space-y-4">
@@ -41,7 +41,7 @@ export default function Decisions() {
                         <span>Confidence: <strong className="text-foreground">{d.confidenceScore}/100</strong></span>
                       </div>
                     </div>
-                    <Button variant="ghost" size="sm" onClick={() => navigate(`/compare/${d.procedureId}`)}>
+                    <Button variant="ghost" size="sm" onClick={() => navigate(`/patient/compare/${d.procedureId}`)}>
                       View <ArrowRight className="ml-1 h-4 w-4" />
                     </Button>
                   </div>
